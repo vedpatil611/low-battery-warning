@@ -10,7 +10,6 @@ char* readfile(char* base, char* file)
     char path[512];
     char *line = (char*) malloc(512 * sizeof(char));
     memset(line, 0, 512 * sizeof(char));
-    
 
     sprintf(path, "%s/%s", base, file);
     FILE* fp = fopen(path, "r");
@@ -35,8 +34,6 @@ int main()
         sscanf(cp, "%d", &cap);
         free(cp);
  
-        printf("%d\n", cap);
-
         cp = readfile("/sys/class/power_supply/BAT1", "status");
         if(!strncmp(cp, "Discharging", 11))
         {
@@ -49,7 +46,7 @@ int main()
         } 
         else if(!strncmp(cp, "Charging", 8))
         {
-            if((flag & 1) && cap > LOW_BATTERY_WARNING_THRESHOLD)
+            if((flag & 1))
             {
                 flag = 0;
             }
