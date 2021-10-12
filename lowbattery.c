@@ -11,7 +11,7 @@ char* readfile(char* base, char* file)
     char *line = (char*) malloc(512 * sizeof(char));
     memset(line, 0, 512 * sizeof(char));
 
-    sprintf(path, "%s/%s", base, file);
+    snprintf(path, 512, "%s/%s", base, file);
     FILE* fp = fopen(path, "r");
 
     if(fp == NULL)
