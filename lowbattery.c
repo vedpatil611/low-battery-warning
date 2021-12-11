@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <memory.h>
-#include <unistd.h>
+#include <libnotify/notify.h>
 
 #define LOW_BATTERY_WARNING_THRESHOLD 20
 
@@ -28,6 +26,9 @@ int main()
 {
     int cap;
     int flag = 0;
+
+    notify_init("Low battery notification");
+
     for (;;sleep(1)) 
     {
         char* cp = readfile("/sys/class/power_supply/BAT1", "capacity");
@@ -40,8 +41,12 @@ int main()
             if(cap <= LOW_BATTERY_WARNING_THRESHOLD && (flag & 1) == 0)
             {
                 flag |= 1;
-                char* signal = "notify-send -u critical \"Battery Low\"";
-                system(signal);
+    
+                NotifyNotification* notification = notify_notification_new("Battery Low", "Connect charger", NULL);
+                
+                notify_notification_show(notification, NULL);
+
+                g_object_unref(G_OBJECT(notification));
             }
         } 
         else if(!strncmp(cp, "Charging", 8))
@@ -53,6 +58,8 @@ int main()
         }
         free(cp);
     }
+
+    notify_uninit();
 
     return 0;
 }

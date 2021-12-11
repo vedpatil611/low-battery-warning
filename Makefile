@@ -3,7 +3,7 @@
 all: lowbattery
 
 lowbattery:
-	gcc -O2 lowbattery.c -o lowbattery
+	gcc -O2 `pkg-config --cflags --libs libnotify` lowbattery.c -o lowbattery
 
 clean:
 	rm lowbattery
