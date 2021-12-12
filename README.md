@@ -1,6 +1,9 @@
 # low-battery-warning
 ## Light weight low battery warning popup for linux
 
+## Prerequisite
+* libnotify (make dependency)
+
 ## Steps to compile
 * `sudo make clean install`
 * execute lowbattery executable on startup
