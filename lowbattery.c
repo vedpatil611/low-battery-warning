@@ -43,7 +43,7 @@ int main()
                 flag |= 1;
     
                 NotifyNotification* notification = notify_notification_new("Battery Low", "Connect charger", NULL);
-                
+                notify_notification_set_urgency(notification, NOTIFY_URGENCY_CRITICAL);
                 notify_notification_show(notification, NULL);
 
                 g_object_unref(G_OBJECT(notification));
