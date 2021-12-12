@@ -1,12 +1,18 @@
 .PHONY: all clean install uninstall
 
+SRC = lowbattery.c
+OBJ = $(SRC:.c=.o)
+
 all: lowbattery
 
-lowbattery:
-	gcc -O2 `pkg-config --cflags --libs libnotify` lowbattery.c -o lowbattery
+.c.o:
+	gcc -O2 `pkg-config --cflags libnotify`-c $<
+
+lowbattery: lowbattery.o
+	gcc `pkg-config --libs libnotify` lowbattery.o -o lowbattery
 
 clean:
-	rm lowbattery
+	rm -f lowbattery $(OBJ)
 
 install: all
 	cp -f lowbattery /usr/local/bin
