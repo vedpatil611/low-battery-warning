@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <sys/file.h>
+#include <errno.h>
 #include <libnotify/notify.h>
 
 #define LOW_BATTERY_WARNING_THRESHOLD 20
@@ -26,6 +28,17 @@ int main()
 {
     int cap;
     int flag = 0;
+
+	char file[256];
+	strcat(strcpy(file, getenv("HOME")), "/.lowbattery_lock");
+    int pid_file = open(file, O_CREAT | O_RDWR, 0666);
+    int rc = flock(pid_file, LOCK_EX | LOCK_NB);
+    if(rc) {
+        if(EWOULDBLOCK == errno)                        // another instance is running
+        {
+            return 1;
+        }
+    }
 
     notify_init("Low battery notification");
 
