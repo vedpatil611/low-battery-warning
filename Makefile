@@ -1,5 +1,6 @@
 .PHONY: all clean install uninstall
 
+PREFIX = /usr/local
 SRC = lowbattery.c
 OBJ = $(SRC:.c=.o)
 
@@ -15,9 +16,10 @@ clean:
 	rm -f lowbattery $(OBJ)
 
 install: all
-	cp -f lowbattery /usr/local/bin
-	chmod 755 /usr/local/bin/lowbattery
+	mkdir -p $(DESTDIR)$(PREFIX)/bin
+	cp -f lowbattery $(DESTDIR)$(PREFIX)/bin
+	chmod 755 $(DESTDIR)$(PREFIX)/bin/lowbattery
 
 uninstall:
-	rm -f /usr/local/bin/lowbattery
+	rm -f $(DESTDIR)$(PREFIX)/bin/lowbattery
 
