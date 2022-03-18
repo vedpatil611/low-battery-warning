@@ -19,7 +19,7 @@ install: all
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	cp -f lowbattery $(DESTDIR)$(PREFIX)/bin
 	chmod 755 $(DESTDIR)$(PREFIX)/bin/lowbattery
-	cp -f lowbattery.service /etc/systemd/system/lowbattery.service
+	cp -f lowbattery.service /usr/lib/systemd/system/lowbattery.service
 uninstall:
 	rm -f $(DESTDIR)$(PREFIX)/bin/lowbattery
 	rm -f /etc/systemd/system/lowbattery.service
