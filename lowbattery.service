@@ -1,0 +1,26 @@
+[Unit]
+
+Description=Low battery warning notification
+
+Documentation=https://www.github.com/vedpatil611/low-battery-warning
+
+[Service]
+
+Type=simple
+
+User=root
+
+Group=root
+
+TimeoutStartSec=0
+
+Restart=on-failure
+
+RestartSec=30s
+
+ExecStart=/usr/bin/lowbattery
+
+[Install]
+
+WantedBy=multi-user.target
+
