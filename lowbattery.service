@@ -18,7 +18,7 @@ Restart=on-failure
 
 RestartSec=30s
 
-ExecStart=/usr/bin/lowbattery
+ExecStart=/usr/local/bin/lowbattery
 
 [Install]
 
