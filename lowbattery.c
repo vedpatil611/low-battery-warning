@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <sys/file.h>
 #include <errno.h>
 #include <libnotify/notify.h>
@@ -40,18 +41,33 @@ int main()
         }
     }
 
+    // Check for path where battery data is saved
+    // Some laptops will have it set in BAT0 & some in BAT1
+    char path[64] = { 0 };
+    FILE* fp = fopen("/sys/class/power_supply/BAT0", "r");
+    if (fp != NULL)
+        strcat(path, "/sys/class/power_supply/BAT0");
+    else
+        strcat(path, "/sys/class/power_supply/BAT1");
+
+    if (fp)
+        fclose(fp);
 
     for (;;sleep(1)) 
     {
-        char* cp = readfile("/sys/class/power_supply/BAT1", "capacity");
+        // Read current battery capacity
+        char* cp = readfile(path, "capacity");
         sscanf(cp, "%d", &cap);
         free(cp);
  
-        cp = readfile("/sys/class/power_supply/BAT1", "status");
+        // Read current battery status (Charing/Discharging)
+        cp = readfile(path, "status");
         if(!strncmp(cp, "Discharging", 11))
         {
+            // If discharing and batery cap is less than threshold then send low battey notif
             if(cap <= LOW_BATTERY_WARNING_THRESHOLD && (flag & 1) == 0 && notify_init("Low battery notification"))
             {
+                // Set flag to one which means notification has been sent and won't bother you again
                 flag |= 1;
     
                 NotifyNotification* notification = notify_notification_new("Battery Low", "Connect charger", NULL);
